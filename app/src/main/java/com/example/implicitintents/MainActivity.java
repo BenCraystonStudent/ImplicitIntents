@@ -8,21 +8,24 @@ import android.widget.EditText;
 import android.net.Uri;
 import android.content.Intent;
 import android.util.Log;
+import androidx.core.app.ShareCompat;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText mWebsiteEditText;
     private EditText mLocationEditText;
+    private EditText mShareTextEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mWebsiteEditText = findViewById(R.id.website_edittext);
+        mLocationEditText = findViewById(R.id.location_edittext);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
     public void openWebsite(View view) {
+        mWebsiteEditText = findViewById(R.id.website_edittext);
         String url = mWebsiteEditText.getText().toString();
         Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
@@ -45,5 +48,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("ImplicitIntents", "Can't handle this intent!");
         }
+    }
+
+    public void shareText(View view) {
+        mShareTextEditText = findViewById(R.id.share_edittext);
+        String txt = mShareTextEditText.getText().toString();
+        String mimeType = "text/plain";
+        ShareCompat.IntentBuilder
+                .from(this)
+                .setType(mimeType)
+                .setChooserTitle(R.string.shareTextWith)
+                .setText(txt)
+                .startChooser();
     }
 }
